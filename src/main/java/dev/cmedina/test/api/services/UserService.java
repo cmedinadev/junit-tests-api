@@ -15,10 +15,10 @@ import dev.cmedina.test.api.repository.UserRepository;
 
 @Service
 public class UserService {
-	
-    @Autowired
-    private ModelMapper mapper;
-    
+
+	@Autowired
+	private ModelMapper mapper;
+
 	@Autowired
 	private UserRepository repository;
 
@@ -31,25 +31,25 @@ public class UserService {
 		return repository.findAll();
 	}
 
-    public User create(UserDTO obj) {
-        findByEmail(obj);
-        return repository.save(mapper.map(obj, User.class));
-    }
+	public User create(UserDTO obj) {
+		findByEmail(obj);
+		return repository.save(mapper.map(obj, User.class));
+	}
 
-    public User update(UserDTO obj) {
-        findByEmail(obj);
-        return repository.save(mapper.map(obj, User.class));
-    }
+	public User update(UserDTO obj) {
+		findByEmail(obj);
+		return repository.save(mapper.map(obj, User.class));
+	}
 
-    public void delete(Integer id) {
-        findById(id);
-        repository.deleteById(id);
-    }
+	public void delete(Integer id) {
+		findById(id);
+		repository.deleteById(id);
+	}
 
-    private void findByEmail(UserDTO obj) {
-        Optional<User> user = repository.findByEmail(obj.getEmail());
-        if(user.isPresent() && !user.get().getId().equals(obj.getId())) {
-            throw new DataIntegratyViolationException("E-mail já cadastrado no sistema");
-        }
-    }
+	private void findByEmail(UserDTO obj) {
+		Optional<User> user = repository.findByEmail(obj.getEmail());
+		if (user.isPresent() && !user.get().getId().equals(obj.getId())) {
+			throw new DataIntegratyViolationException("E-mail já cadastrado no sistema");
+		}
+	}
 }
