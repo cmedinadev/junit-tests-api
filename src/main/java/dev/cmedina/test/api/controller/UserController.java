@@ -23,42 +23,41 @@ import dev.cmedina.test.api.services.UserService;
 @RequestMapping(value = "/user")
 @RestController
 public class UserController {
-	
+
 	@Autowired
 	private UserService service;
-	
+
 	@Autowired
 	private ModelMapper mapper;
-	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> findById(@PathVariable("id") Integer id) {
 		return ResponseEntity.ok().body(mapper.map(service.findById(id), UserDTO.class));
 	}
-	
+
 	@GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
-        return ResponseEntity.ok().body(service.findAll()
-                .stream().map(x -> mapper.map(x, UserDTO.class)).collect(Collectors.toList()));
-    }
-	
+	public ResponseEntity<List<UserDTO>> findAll() {
+		return ResponseEntity.ok()
+				.body(service.findAll().stream().map(x -> mapper.map(x, UserDTO.class)).collect(Collectors.toList()));
+	}
+
 	@PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody UserDTO obj) {
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}").buildAndExpand(service.create(obj).getId()).toUri();
-        return ResponseEntity.created(uri).build();
-    }
+	public ResponseEntity<UserDTO> create(@RequestBody UserDTO obj) {
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(service.create(obj).getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO obj) {
-        obj.setId(id);
-        return ResponseEntity.ok().body(mapper.map(service.update(obj), UserDTO.class));
-    }
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO obj) {
+		obj.setId(id);
+		return ResponseEntity.ok().body(mapper.map(service.update(obj), UserDTO.class));
+	}
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> delete(@PathVariable Integer id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
-    }
-	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<UserDTO> delete(@PathVariable Integer id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+
 }
